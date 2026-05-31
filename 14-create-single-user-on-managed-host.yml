@@ -1,0 +1,57 @@
+---
+#########################################################################
+# Playbook Name : Create Single User on Managed Host
+#
+# Objective:
+# Create a Linux user account on the managed host using the
+# Ansible user module.
+#
+# Concepts Covered:
+# 1. user module
+# 2. User Management
+# 3. Linux Administration
+# 4. Idempotency
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create a Linux User
+    #
+    # WHY?
+    # In Linux systems, every person or application usually operates
+    # through a user account.
+    #
+    # Examples:
+    #
+    # - jenkins
+    # - tomcat
+    # - mysql
+    # - developer accounts
+    #
+    # Before a user can log in or own files, the user account must
+    # exist on the system.
+    #
+    # The user module automates user management tasks.
+    #
+    # state: present
+    # Ensures the user exists.
+    #
+    # If the user does not exist:
+    # → Ansible creates it.
+    #
+    # If the user already exists:
+    # → No changes are made.
+    #
+    #####################################################################
+
+    - name: Create User
+      user:
+        name: aarush
+        state: present
