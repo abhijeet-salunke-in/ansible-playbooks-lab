@@ -1,0 +1,64 @@
+---
+#########################################################################
+# Playbook Name : Display Operating System Information of Managed Host
+#
+# Objective:
+# Retrieve and display the Operating System family of the target host
+# using Ansible Facts.
+#
+# Concepts Covered:
+# 1. Ansible Facts
+# 2. gather_facts
+# 3. debug module
+# 4. Operating System Detection
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+  gather_facts: yes
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Display Operating System Family
+    #
+    # WHY?
+    # Different Linux distributions use different package managers
+    # and service management commands.
+    #
+    # Examples:
+    #
+    # RedHat Family:
+    # - RHEL
+    # - CentOS
+    # - Rocky Linux
+    # - AlmaLinux
+    #
+    # Debian Family:
+    # - Ubuntu
+    # - Debian
+    #
+    # Before installing packages or configuring services, it is useful
+    # to identify the operating system family.
+    #
+    # Ansible automatically collects this information through Facts.
+    #
+    # The variable:
+    #
+    #     ansible_os_family
+    #
+    # returns the OS family of the target host.
+    #
+    # Example Output:
+    #
+    # OS : RedHat
+    # OS : Debian
+    #
+    #####################################################################
+
+    - name: Display Operating System Family
+      debug:
+        msg: "OS : {{ ansible_os_family }}"
