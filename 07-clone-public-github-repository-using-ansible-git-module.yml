@@ -1,0 +1,52 @@
+---
+#########################################################################
+# Playbook Name : Clone Public GitHub Repository Using Ansible Git Module
+#
+# Objective:
+# Clone a public GitHub repository onto a managed host using Ansible's
+# git module.
+#
+# Concepts Covered:
+# 1. git module
+# 2. Source Code Management (SCM)
+# 3. Repository Cloning
+# 4. Version Control Integration
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Clone GitHub Repository
+    #
+    # WHY?
+    # In real-world DevOps projects, application source code is stored
+    # in Git repositories such as GitHub, GitLab, or Bitbucket.
+    #
+    # Before building, testing, or deploying an application, we must
+    # retrieve the source code from the repository.
+    #
+    # The git module automates the cloning process.
+    #
+    # repo:
+    # Specifies the repository URL.
+    #
+    # dest:
+    # Specifies the destination directory where the repository
+    # will be cloned.
+    #
+    # version:
+    # Specifies the branch, tag, or commit to checkout.
+    #
+    #####################################################################
+
+    - name: Clone Public GitHub Repository
+      git:
+        repo: "https://github.com/abhijeet-salunke-in/java3.git"
+        dest: "/root/Desktop/Projects/"
+        version: "main"
