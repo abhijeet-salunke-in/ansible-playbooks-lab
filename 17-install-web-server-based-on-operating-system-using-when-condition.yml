@@ -1,0 +1,83 @@
+---
+#########################################################################
+# Playbook Name : Install Web Server Based on Operating System
+#
+# Objective:
+# Automatically install the correct web server package depending
+# on the operating system of the managed host.
+#
+# Concepts Covered:
+# 1. Conditional Statements (when)
+# 2. Ansible Facts
+# 3. Cross-Platform Automation
+# 4. yum module
+# 5. apt module
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Install HTTPD on RedHat-Based Systems
+    #
+    # WHY?
+    # RedHat family operating systems use:
+    #
+    # - RHEL
+    # - CentOS
+    # - Rocky Linux
+    # - AlmaLinux
+    #
+    # These distributions use the package name:
+    #
+    # httpd
+    #
+    # The task executes only if:
+    #
+    # ansible_os_family == "RedHat"
+    #
+    #####################################################################
+
+    - name: Install HTTPD on RedHat Family
+      yum:
+        name: httpd
+        state: present
+
+      when: ansible_os_family == "RedHat"
+
+    #####################################################################
+    # Task 2 : Install Apache2 on Debian-Based Systems
+    #
+    # WHY?
+    # Debian family operating systems use:
+    #
+    # - Ubuntu
+    # - Debian
+    #
+    # These distributions use the package name:
+    #
+    # apache2
+    #
+    # update_cache: yes
+    #
+    # Updates package metadata before installation.
+    #
+    # This task executes only if:
+    #
+    # ansible_os_family == "Debian"
+    #
+    #####################################################################
+
+    - name: Install Apache2 on Debian Family
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+      when: ansible_os_family == "Debian"
