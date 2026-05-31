@@ -1,0 +1,50 @@
+---
+#########################################################################
+# Playbook Name : Display IPv4 Address Information of Managed Host
+#
+# Objective:
+# Retrieve and display all IPv4 addresses configured on the target
+# machine using Ansible Facts.
+#
+# Concepts Covered:
+# 1. Ansible Facts
+# 2. gather_facts
+# 3. debug module
+# 4. System Information Collection
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+  gather_facts: yes
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Display IPv4 Address Information
+    #
+    # WHY?
+    # Before performing server administration tasks, troubleshooting,
+    # or application deployments, it is often necessary to know the
+    # IP address of the target machine.
+    #
+    # Ansible automatically collects system information called "Facts"
+    # when gather_facts is enabled.
+    #
+    # The variable:
+    #
+    #     ansible_all_ipv4_addresses
+    #
+    # contains a list of all IPv4 addresses configured on the host.
+    #
+    # Example Output:
+    #
+    # IPV4 ['192.168.1.10', '10.0.0.5']
+    #
+    #####################################################################
+
+    - name: Display All IPv4 Addresses
+      debug:
+        msg: "IPV4 {{ ansible_all_ipv4_addresses }}"
