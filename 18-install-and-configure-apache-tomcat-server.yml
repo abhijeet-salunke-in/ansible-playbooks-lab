@@ -1,7 +1,7 @@
 ---
 #########################################################################
 # Playbook Name : Install and Configure Apache Tomcat Server
-#
+# 
 # Objective:
 # Download, extract, configure, and start Apache Tomcat on the
 # managed host using Ansible.
