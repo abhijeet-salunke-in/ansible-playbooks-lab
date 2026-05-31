@@ -1,0 +1,64 @@
+---
+#########################################################################
+# Playbook Name : Install Package Using Ansible Variables
+#
+# Objective:
+# Demonstrate how variables can be used to make playbooks dynamic
+# and reusable by avoiding hardcoded values.
+#
+# Concepts Covered:
+# 1. Variables (vars)
+# 2. Variable Substitution
+# 3. Reusable Playbooks
+# 4. Dynamic Package Installation
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  #######################################################################
+  # Variables Section
+  #
+  # WHY?
+  # Instead of hardcoding package names directly in tasks, we can
+  # store them in variables.
+  #
+  # Benefits:
+  # - Easier maintenance
+  # - Better readability
+  # - More reusable playbooks
+  # - Faster modifications
+  #
+  #######################################################################
+
+  vars:
+    mytool: httpd
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Install Package Using Variable
+    #
+    # WHY?
+    # The package name is stored inside the variable "mytool".
+    #
+    # When the playbook runs:
+    #
+    # {{ mytool }}
+    #
+    # gets replaced with:
+    #
+    # httpd
+    #
+    # This allows us to change the package by modifying only the
+    # variable value instead of changing the task itself.
+    #
+    #####################################################################
+
+    - name: Install {{ mytool }}
+      yum:
+        name: "{{ mytool }}"
+        state: present
