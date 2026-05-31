@@ -1,0 +1,81 @@
+---
+#########################################################################
+# Playbook Name : Create File with Owner and Group Permissions
+#
+# Objective:
+# Create a user, create a group, and assign ownership of a file
+# to that user and group.
+#
+# Concepts Covered:
+# 1. user module
+# 2. group module
+# 3. file module
+# 4. File Ownership
+# 5. Linux Permissions
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create User
+    #
+    # WHY?
+    # In Linux, files and directories are typically owned by users.
+    #
+    # Before assigning ownership, the user must exist on the system.
+    #
+    # state: present
+    # Ensures that the user exists.
+    #
+    #####################################################################
+
+    - name: Create User
+      user:
+        name: sunil
+        state: present
+
+    #####################################################################
+    # Task 2 : Create Group
+    #
+    # WHY?
+    # Groups help manage permissions for multiple users.
+    #
+    # Before assigning a group to a file, the group must exist.
+    #
+    #####################################################################
+
+    - name: Create Group
+      group:
+        name: bcafy
+        state: present
+
+    #####################################################################
+    # Task 3 : Create File and Assign Ownership
+    #
+    # WHY?
+    # Applications often require files to be owned by specific
+    # users and groups.
+    #
+    # owner:
+    # Specifies the user who owns the file.
+    #
+    # group:
+    # Specifies the group that owns the file.
+    #
+    # state: touch
+    # Creates the file if it does not already exist.
+    #
+    #####################################################################
+
+    - name: Create File with Owner and Group
+      file:
+        path: "/root/Demo/sample1"
+        state: touch
+        owner: sunil
+        group: bcafy
