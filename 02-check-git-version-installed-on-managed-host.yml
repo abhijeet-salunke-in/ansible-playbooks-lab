@@ -1,0 +1,68 @@
+---
+#########################################################################
+# Playbook Name : Check Git Version on Managed Host
+#
+# Objective:
+# Verify whether Git is installed on the target machine and display
+# its version information.
+#
+# Concepts Covered:
+# 1. command module
+# 2. register variable
+# 3. debug module
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Check Git Version
+    #
+    # WHY?
+    # Before cloning repositories or performing Git operations, it is
+    # important to verify that Git is installed on the target machine.
+    #
+    # The command module executes the Linux command:
+    #
+    #     git -v
+    #
+    # The output is stored in a variable called 'gitv' using register.
+    #####################################################################
+
+    - name: Check whether Git is installed
+      command: git -v
+      register: gitv
+
+    #####################################################################
+    # Task 2 : Display Command Output
+    #
+    # WHY?
+    # The debug module is used to print variable values during playbook
+    # execution.
+    #
+    # Here we print the complete registered output which includes:
+    # - stdout
+    # - stderr
+    # - return code
+    # - execution details
+    #####################################################################
+
+    - name: Display Git Command Output
+      debug:
+        msg: "{{ gitv }}"
+
+    #####################################################################
+    # Alternative:
+    #
+    # To display only the Git version:
+    #
+    # - name: Display Git Version Only
+    #   debug:
+    #     msg: "{{ gitv.stdout }}"
+    #
+    #####################################################################
