@@ -1,0 +1,52 @@
+---
+#########################################################################
+# Playbook Name : Create Multiple Users Using Loop and with_items
+#
+# Objective:
+# Create multiple Linux users using a single task instead of writing
+# separate tasks for each user.
+#
+# Concepts Covered:
+# 1. user module
+# 2. Loops in Ansible
+# 3. with_items
+# 4. Automation and Reusability
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create Multiple Users
+    #
+    # WHY?
+    # Imagine an organization needs 50 users.
+    #
+    # Without loops:
+    # We would need to write 50 separate user creation tasks.
+    #
+    # With loops:
+    # We write one task and provide a list of usernames.
+    #
+    # with_items:
+    # Iterates through each item in the list.
+    #
+    # item:
+    # Represents the current value being processed.
+    #
+    #####################################################################
+
+    - name: Create Multiple Users
+      user:
+        name: "{{ item }}"
+        state: present
+
+      with_items:
+        - ansa1
+        - ansa2
+        - ansa3
