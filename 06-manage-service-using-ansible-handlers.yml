@@ -1,0 +1,70 @@
+---
+#########################################################################
+# Playbook Name : Manage Service Using Ansible Handlers
+#
+# Objective:
+# Install the Apache HTTP Server (httpd) and start the service only
+# when a change occurs.
+#
+# Concepts Covered:
+# 1. Handlers
+# 2. notify
+# 3. service module
+# 4. Event-Driven Automation
+# 5. Idempotency
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Install HTTPD Package
+    #
+    # WHY?
+    # Apache HTTP Server (httpd) must be installed before it can be
+    # started and used.
+    #
+    # The yum module ensures that the package is present on the
+    # managed host.
+    #
+    # notify:
+    # If this task makes a change (for example, installs the package),
+    # Ansible will notify the handler named "Start HTTPD Service".
+    #
+    # If no change occurs, the handler will NOT run.
+    #
+    #####################################################################
+
+    - name: Install HTTPD Package
+      yum:
+        name: httpd
+        state: present
+      notify: Start HTTPD Service
+
+  handlers:
+
+    #####################################################################
+    # Handler : Start HTTPD Service
+    #
+    # WHY?
+    # Handlers are special tasks that run only when they are notified.
+    #
+    # In this example:
+    #
+    # - If HTTPD gets installed → handler runs.
+    # - If HTTPD is already installed → handler does not run.
+    #
+    # This prevents unnecessary service operations and follows
+    # Ansible best practices.
+    #
+    #####################################################################
+
+    - name: Start HTTPD Service
+      service:
+        name: httpd
+        state: started
