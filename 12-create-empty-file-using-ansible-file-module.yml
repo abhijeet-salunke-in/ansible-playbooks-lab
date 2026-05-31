@@ -1,0 +1,64 @@
+---
+#########################################################################
+# Playbook Name : Create Empty File Using Ansible File Module
+#
+# Objective:
+# Create an empty file on the managed host using the file module.
+#
+# Concepts Covered:
+# 1. file module
+# 2. state: touch
+# 3. File Creation
+# 4. Idempotency
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create an Empty File
+    #
+    # WHY?
+    # In Linux environments, empty files are often created for:
+    #
+    # - Log files
+    # - Placeholder files
+    # - Application marker files
+    # - Configuration preparation
+    # - Testing purposes
+    #
+    # The file module with:
+    #
+    #     state: touch
+    #
+    # works similarly to the Linux touch command.
+    #
+    # If the file does not exist:
+    # → Ansible creates it.
+    #
+    # If the file already exists:
+    # → Ansible updates its timestamp.
+    #
+    #####################################################################
+
+    - name: Create Empty File
+      file:
+        path: "demo"
+        state: touch
+
+    #####################################################################
+    # Alternative Short Syntax
+    #
+    # - name: Create Empty File
+    #   file: path="demo1" state=touch
+    #
+    # NOTE:
+    # The long YAML syntax is preferred because it is easier to
+    # read and maintain in production environments.
+    #
+    #####################################################################
