@@ -1,0 +1,153 @@
+---
+#########################################################################
+# Playbook Name : Install and Configure Apache Tomcat Server
+#
+# Objective:
+# Download, extract, configure, and start Apache Tomcat on the
+# managed host using Ansible.
+#
+# Concepts Covered:
+# 1. get_url module
+# 2. command module
+# 3. copy module
+# 4. shell module
+# 5. Application Deployment
+# 6. Apache Tomcat Administration
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Download Apache Tomcat
+    #
+    # WHY?
+    # Before using Tomcat, we need to download the installation package
+    # from the official Apache download server.
+    #
+    # get_url:
+    # Downloads files from a URL and stores them on the managed host.
+    #
+    #####################################################################
+
+    - name: Download Apache Tomcat Package
+      get_url:
+        url: "https://downloads.apache.org/tomcat/tomcat-9/v9.0.115/bin/apache-tomcat-9.0.115.tar.gz"
+        dest: "/root"
+
+    #####################################################################
+    # Task 2 : Extract Tomcat Archive
+    #
+    # WHY?
+    # Tomcat is downloaded as a compressed tar.gz archive.
+    #
+    # Before it can be used, the archive must be extracted.
+    #
+    #####################################################################
+
+    - name: Extract Tomcat Archive
+      command: tar -xvf apache-tomcat-9.0.115.tar.gz
+
+    #####################################################################
+    # Task 3 : Rename Tomcat Directory
+    #
+    # WHY?
+    # The extracted directory contains the version number.
+    #
+    # Original:
+    # apache-tomcat-9.0.115
+    #
+    # Renamed:
+    # tomcat
+    #
+    # This makes future upgrades and management easier because scripts
+    # can always refer to a fixed directory name.
+    #
+    #####################################################################
+
+    - name: Rename Tomcat Directory
+      command: mv apache-tomcat-9.0.115 tomcat
+
+    #####################################################################
+    # Task 4 : Stop Existing Tomcat Service
+    #
+    # WHY?
+    # Configuration files should not be modified while Tomcat is
+    # actively running.
+    #
+    # Therefore, we stop Tomcat before replacing configuration files.
+    #
+    #####################################################################
+
+    - name: Stop Tomcat
+      shell: nohup /root/tomcat/bin/shutdown.sh
+
+    #####################################################################
+    # Task 5 : Replace server.xml
+    #
+    # WHY?
+    # server.xml is Tomcat's primary configuration file.
+    #
+    # It contains:
+    # - Connector ports
+    # - Protocol settings
+    # - Service definitions
+    #
+    # In many training environments, the default port is changed to
+    # avoid conflicts with other applications.
+    #
+    #####################################################################
+
+    - name: Copy server.xml Configuration
+      copy:
+        src: "/root/Playbooks/tom-files/server.xml"
+        dest: "/root/tomcat/conf/"
+
+    #####################################################################
+    # Task 6 : Replace context.xml
+    #
+    # WHY?
+    # context.xml controls application context settings and manager
+    # application access.
+    #
+    #####################################################################
+
+    - name: Copy context.xml Configuration
+      copy:
+        src: "/root/Playbooks/tom-files/context.xml"
+        dest: "/root/tomcat/webapps/manager/META-INF/"
+
+    #####################################################################
+    # Task 7 : Replace tomcat-users.xml
+    #
+    # WHY?
+    # This file defines Tomcat users, roles, and permissions.
+    #
+    # It is commonly modified to allow access to:
+    #
+    # - Manager Application
+    # - Host Manager Application
+    #
+    #####################################################################
+
+    - name: Copy tomcat-users.xml Configuration
+      copy:
+        src: "/root/Playbooks/tom-files/tomcat-users.xml"
+        dest: "/root/tomcat/conf/"
+
+    #####################################################################
+    # Task 8 : Start Tomcat
+    #
+    # WHY?
+    # After configuration changes are completed, Tomcat must be started
+    # so the new settings take effect.
+    #
+    #####################################################################
+
+    - name: Start Tomcat
+      shell: nohup /root/tomcat/bin/startup.sh
