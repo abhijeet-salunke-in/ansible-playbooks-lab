@@ -1,0 +1,45 @@
+---
+#########################################################################
+# Playbook Name : Display Custom Message Using Debug Module
+#
+# Objective:
+# Display a custom message on the Ansible control node during
+# playbook execution.
+#
+# Concepts Covered:
+# 1. debug module
+# 2. Message Printing
+# 3. Troubleshooting
+# 4. Playbook Output Verification
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Display Custom Message
+    #
+    # WHY?
+    # During playbook execution, it is often useful to display
+    # messages to:
+    #
+    # - Verify playbook execution flow
+    # - Display variable values
+    # - Show status information
+    # - Assist in troubleshooting
+    # - Provide user-friendly output
+    #
+    # The debug module is one of the most commonly used modules
+    # in Ansible because it helps administrators understand
+    # what is happening inside a playbook.
+    #
+    #####################################################################
+
+    - name: Display Welcome Message
+      debug:
+        msg: "Welcome abhi..."
