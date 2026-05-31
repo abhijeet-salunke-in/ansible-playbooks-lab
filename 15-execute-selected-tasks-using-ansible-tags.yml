@@ -1,0 +1,96 @@
+---
+#########################################################################
+# Playbook Name : Execute Selected Tasks Using Ansible Tags
+#
+# Objective:
+# Demonstrate how Ansible Tags can be used to execute only specific
+# tasks or skip specific tasks during playbook execution.
+#
+# Concepts Covered:
+# 1. Tags
+# 2. Selective Task Execution
+# 3. Task Filtering
+# 4. Playbook Optimization
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create Directory
+    #
+    # WHY?
+    # This task creates a directory on the managed host.
+    #
+    # Tag:
+    # abhi
+    #
+    # If we execute the playbook with:
+    #
+    # ansible-playbook playbook.yml --tags abhi
+    #
+    # this task will run.
+    #
+    #####################################################################
+
+    - name: Create Directory
+      file:
+        path: "/root/Demo/DemoP"
+        state: directory
+      tags: abhi
+
+    #####################################################################
+    # Task 2 : Create File1
+    #
+    # WHY?
+    # Creates an empty file.
+    #
+    # Tag:
+    # abhi
+    #
+    # This task belongs to the same tag group as Task 1.
+    #
+    #####################################################################
+
+    - name: Create File1
+      file:
+        path: "/root/Demo/file1"
+        state: touch
+      tags: abhi
+
+    #####################################################################
+    # Task 3 : Create File2
+    #
+    # WHY?
+    # Creates another file.
+    #
+    # No tag assigned.
+    #
+    # This task runs only during normal playbook execution.
+    #
+    #####################################################################
+
+    - name: Create File2
+      file:
+        path: "/root/Demo/file2"
+        state: touch
+
+    #####################################################################
+    # Task 4 : Create File3
+    #
+    # WHY?
+    # Creates another file.
+    #
+    # No tag assigned.
+    #
+    #####################################################################
+
+    - name: Create File3
+      file:
+        path: "/root/Demo/file3"
+        state: touch
