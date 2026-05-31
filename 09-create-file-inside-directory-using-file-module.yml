@@ -1,0 +1,56 @@
+---
+#########################################################################
+# Playbook Name : Create File Inside Directory Using File Module
+#
+# Objective:
+# Create an empty file inside an existing directory on the managed host.
+#
+# Concepts Covered:
+# 1. file module
+# 2. state: touch
+# 3. File Creation
+# 4. Directory Structure Management
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create File Inside Directory
+    #
+    # WHY?
+    # Applications often require files such as:
+    #
+    # - Log files
+    # - Configuration files
+    # - Temporary files
+    # - Placeholder files
+    #
+    # The file module with:
+    #
+    #     state: touch
+    #
+    # behaves similarly to the Linux touch command.
+    #
+    # If the file does not exist:
+    # → It will be created.
+    #
+    # If the file already exists:
+    # → Its timestamp will be updated.
+    #
+    # In this example:
+    #
+    # demo/
+    # └── file1
+    #
+    #####################################################################
+
+    - name: Create File Inside Directory
+      file:
+        path: "demo/file1"
+        state: touch
