@@ -1,0 +1,60 @@
+---
+#########################################################################
+# Playbook Name : Install Packages Using Different Ansible Modules
+#
+# Objective:
+# Demonstrate three different methods of installing packages in Ansible.
+#
+# Methods Covered:
+# 1. action module
+# 2. yum module
+# 3. command module
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Method 1 : Using Action Module
+    #
+    # WHY?
+    # The action module is a generic way of calling another module.
+    # Here it calls the yum module internally to install Apache HTTPD.
+    #####################################################################
+
+    - name: Install HTTPD using Action Module
+      action: yum name=httpd state=present
+
+    #####################################################################
+    # Method 2 : Using Yum Module
+    #
+    # WHY?
+    # This is the recommended and most readable method for package
+    # installation on RedHat/CentOS based systems.
+    #####################################################################
+
+    - name: Install Ansible Core using Yum Module
+      yum:
+        name: ansible-core
+        state: present
+
+    #####################################################################
+    # Method 3 : Using Command Module
+    #
+    # WHY?
+    # Executes a Linux command exactly as written.
+    #
+    # NOTE:
+    # This is generally NOT recommended for package installation because
+    # Ansible cannot fully track the package state.
+    #
+    # Used here only for learning purposes.
+    #####################################################################
+
+    - name: Install Maven using Command Module
+      command: yum install maven -y
