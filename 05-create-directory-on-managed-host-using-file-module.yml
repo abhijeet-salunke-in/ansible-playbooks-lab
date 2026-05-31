@@ -1,0 +1,62 @@
+---
+#########################################################################
+# Playbook Name : Create Directory on Managed Host Using File Module
+#
+# Objective:
+# Create a directory on the target machine using Ansible's file module.
+#
+# Concepts Covered:
+# 1. file module
+# 2. Directory Management
+# 3. Idempotency
+#
+# Target Host Group:
+# dev
+#########################################################################
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+
+    #####################################################################
+    # Task 1 : Create a Directory
+    #
+    # WHY?
+    # Many applications require directories for:
+    #
+    # - Application files
+    # - Logs
+    # - Backups
+    # - Configurations
+    # - Project storage
+    #
+    # The file module can be used to create, delete, or modify files
+    # and directories on managed hosts.
+    #
+    # state: directory
+    #
+    # tells Ansible to create a directory if it does not already exist.
+    #
+    # Ansible is idempotent, meaning:
+    #
+    # - If the directory does not exist → it will be created.
+    # - If the directory already exists → no changes are made.
+    #
+    #####################################################################
+
+    - name: Create Directory Using File Module
+      file:
+        path: "demo"
+        state: directory
+
+    #####################################################################
+    # Alternative Syntax
+    #
+    # - name: Create Directory Using Short Syntax
+    #   file: path="demo2" state=directory
+    #
+    # NOTE:
+    # Long YAML syntax is preferred because it is easier to read,
+    # maintain, and troubleshoot in production environments.
+    #####################################################################
